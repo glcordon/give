@@ -386,9 +386,9 @@ class GivingCalculationResource extends Resource
         $totalChecks = $get('total_checks') ?? 0;
         $totalCoin = $get('total_coin') ?? 0;
         $totalOther = $get('total_other_donations') ?? 0;
-        $set('total_bank_deposit', number_format($totalCash + $totalChecks + $totalCoin, 2));
-        $set('total_giving', number_format($totalCash + $totalChecks + $totalCoin, 2));
-        $set('total_cash_coin', number_format($totalCash + $totalCoin, 2));
+        $set('total_bank_deposit', $totalCash + $totalChecks + $totalCoin);
+        $set('total_giving', $totalCash + $totalChecks + $totalCoin);
+        $set('total_cash_coin', $totalCash + $totalCoin);
     }
 
     public static function setBankDeposit($set, $get)
