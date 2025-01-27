@@ -62,7 +62,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_1')
                                     ->label('$1 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->live()
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
@@ -72,7 +72,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_5')
                                     ->label('$5 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->live()
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
@@ -82,7 +82,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_10')
                                     ->label('$10 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -92,7 +92,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_20')
                                     ->label('$20 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -102,7 +102,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_50')
                                     ->label('$50 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -112,7 +112,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_100')
                                     ->label('$100 Bills')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -126,7 +126,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_penny')
                                     ->label('Penny')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->live()
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
@@ -136,7 +136,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_nickel')
                                     ->label('Nickel')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->live()
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
@@ -146,7 +146,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_dime')
                                     ->label('Dime')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -156,7 +156,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_quarter')
                                     ->label('Quarter')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -166,7 +166,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_half_dollar')
                                     ->label('Half Dollar')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -176,7 +176,7 @@ class GivingCalculationResource extends Resource
                                 Forms\Components\TextInput::make('denomination_coin_dollar')
                                     ->label('Coin Dollar')
                                     ->numeric()
-                                    ->default(0)
+                                    ->placeholder(0)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
@@ -260,7 +260,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Cash ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -268,7 +268,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Coin ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -276,7 +276,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Cash + Coin ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -284,7 +284,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Other Donations ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -292,7 +292,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Checks ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -300,7 +300,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Bank Deposit ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -308,7 +308,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Giving ($)')
                             ->numeric()
                             ->prefix('$')
-                            ->default(0)
+                            ->placeholder(0)
                             ->readOnly()
                             ->reactive(),
                     ]),
@@ -386,8 +386,9 @@ class GivingCalculationResource extends Resource
         $totalChecks = $get('total_checks') ?? 0;
         $totalCoin = $get('total_coin') ?? 0;
         $totalOther = $get('total_other_donations') ?? 0;
-        $set('total_bank_Deposit', $totalCash + $totalChecks + $totalCoin);
-        $set('total_cash_coin', $totalCash + $totalCoin);
+        $set('total_bank_deposit', number_format($totalCash + $totalChecks + $totalCoin, 2));
+        $set('total_giving', number_format($totalCash + $totalChecks + $totalCoin, 2));
+        $set('total_cash_coin', number_format($totalCash + $totalCoin, 2));
     }
 
     public static function setBankDeposit($set, $get)
@@ -395,6 +396,6 @@ class GivingCalculationResource extends Resource
         $totalCash = $get('total_cash') ?? 0;
         $totalChecks = $get('total_checks') ?? 0;
         $totalCoin = $get('total_coin') ?? 0;
-        $set('total_bank_Deposit', $totalCash + $totalChecks + $totalCoin);
+        $set('total_bank_deposit', $totalCash + $totalChecks + $totalCoin);
     }
 }
