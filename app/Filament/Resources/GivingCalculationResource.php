@@ -326,6 +326,7 @@ class GivingCalculationResource extends Resource
                 TextColumn::make('total_cash')->label('Total Cash')->money('USD'),
                 TextColumn::make('total_checks')->label('Total Checks')->money('USD'),
                 TextColumn::make('total_giving')->label('Total Giving')->money('USD'),
+                TextColumn::make('total_bank_deposit')->label('Total Giving')->money('USD'),
             ])
             ->actions([
                 Action::make('delete')
