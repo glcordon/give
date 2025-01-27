@@ -187,46 +187,58 @@ class GivingCalculationResource extends Resource
 
                         // Checks
                         Fieldset::make('Checks')
-                        ->schema([
-                        Forms\Components\Repeater::make('checks')
                             ->schema([
-                                Forms\Components\TextInput::make('check_number')
-                                    ->label('Check Number')
-                                    ->required(),
-                                Forms\Components\TextInput::make('issuer_name')
-                                    ->label('Issuer Name')
-                                    ->required(),
-                                Forms\Components\TextInput::make('amount')
-                                    ->label('Amount ($)')
-                                    ->numeric()
-                                    ->prefix('$')
-                                    ->live(debounce:1000)
-                                    ->required(),
-                            ])->afterStateUpdated(function ($set, $get) {
+                                Forms\Components\Repeater::make('checks')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('check_number')
+                                            ->label('Check Number')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('issuer_name')
+                                            ->label('Issuer Name')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('amount')
+                                            ->label('Amount ($)')
+                                            ->numeric()
+                                            ->prefix('$')
+                                            ->live(debounce: 1000)
+                                            ->required(),
+                                    ])->afterStateUpdated(function ($set, $get) {
                                         Self::updateChecksTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                            ->columns(3)
-                            ->defaultItems(0)
-                            ->label('Checks'),
-                                ])
-                                ->columns(1),
+                                    ->columns(3)
+                                    ->defaultItems(0)
+                                    ->label('Checks'),
+                            ])
+                            ->columns(1),
 
                         // Other Donations
                         Fieldset::make('Other Donations')
-                        ->schema([
-                        Forms\Components\Repeater::make('other_donations')
                             ->schema([
-                                Forms\Components\TextInput::make('source')
-                                    ->label('Source'),
-                                Forms\Components\TextInput::make('amount')
-                                    ->label('Amount ($)')
-                                    ->prefix('$')
-                                    ->numeric(),
-                            ])
-                            ->columns(2)
-                            ->defaultItems(0)
-                            ->label('Other Donations'),
+                                Forms\Components\Repeater::make('other_donations')
+                                    ->schema([
+                                        Forms\Components\Select::make('source')
+                                            ->options([
+                                                'cash_app' => 'Cash App',
+                                                'givelify' => 'Givelify',
+                                                'money_order' => 'Money Order',
+                                                'zelle' => 'Zelle',
+                                                'other' => 'other',
+                                            ])
+                                            ->label('Source'),
+                                        Forms\Components\TextInput::make('amount')
+                                            ->label('Amount ($)')
+                                            ->prefix('$')
+                                            ->live(debounce: 1000)
+                                            ->numeric(),
+                                    ])
+                                    ->columns(2)
+                                    ->defaultItems(0)
+                                    ->afterStateUpdated(function ($set, $get) {
+                                        Self::updateOtherTotal($set, $get);
+                                        Self::setTotalAmount($set, $get);
+                                    })
+                                    ->label('Other Donations'),
                             ])
                             ->columns(1),
 
@@ -248,6 +260,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Cash ($)')
                             ->numeric()
                             ->prefix('$')
+                            ->default(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -255,6 +268,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Coin ($)')
                             ->numeric()
                             ->prefix('$')
+                            ->default(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -262,6 +276,15 @@ class GivingCalculationResource extends Resource
                             ->label('Total Cash + Coin ($)')
                             ->numeric()
                             ->prefix('$')
+                            ->default(0)
+                            ->readOnly()
+                            ->reactive(),
+
+                        Forms\Components\TextInput::make('total_other_donations')
+                            ->label('Total Other Donations ($)')
+                            ->numeric()
+                            ->prefix('$')
+                            ->default(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -269,6 +292,15 @@ class GivingCalculationResource extends Resource
                             ->label('Total Checks ($)')
                             ->numeric()
                             ->prefix('$')
+                            ->default(0)
+                            ->readOnly()
+                            ->reactive(),
+
+                        Forms\Components\TextInput::make('total_bank_deposit')
+                            ->label('Total Bank Deposit ($)')
+                            ->numeric()
+                            ->prefix('$')
+                            ->default(0)
                             ->readOnly()
                             ->reactive(),
 
@@ -276,6 +308,7 @@ class GivingCalculationResource extends Resource
                             ->label('Total Giving ($)')
                             ->numeric()
                             ->prefix('$')
+                            ->default(0)
                             ->readOnly()
                             ->reactive(),
                     ]),
@@ -296,10 +329,10 @@ class GivingCalculationResource extends Resource
             ])
             ->actions([
                 Action::make('delete')
-                ->requiresConfirmation()
-                ->action(fn (GivingCalculation $record) => $record->delete())
-        ])
-            ;
+                    ->requiresConfirmation()
+                    ->action(fn(GivingCalculation $record) => $record->delete())
+            ])
+        ;
     }
 
     public static function getPages(): array
@@ -313,25 +346,25 @@ class GivingCalculationResource extends Resource
 
     public static function updateDenominationsTotal($set, $get)
     {
-        $set('total_cash', 
+        $set(
+            'total_cash',
             (intval($get('denomination_1')) ?? 0) * 1 +
-            (intval($get('denomination_5')) ?? 0) * 5 +
-            (intval($get('denomination_10')) ?? 0) * 10 +
-            (intval($get('denomination_20')) ?? 0) * 20 +
-            (intval($get('denomination_50')) ?? 0) * 50 +
-            (intval($get('denomination_100')) ?? 0) * 100
+                (intval($get('denomination_5')) ?? 0) * 5 +
+                (intval($get('denomination_10')) ?? 0) * 10 +
+                (intval($get('denomination_20')) ?? 0) * 20 +
+                (intval($get('denomination_50')) ?? 0) * 50 +
+                (intval($get('denomination_100')) ?? 0) * 100
         );
     }
     public static function updateCoinTotal($set, $get)
     {
         $totalCoin = (intval($get('denomination_penny')) ?? 0) * 0.01 +
-        (intval($get('denomination_nickel')) ?? 0) * 0.05 +
-        (intval($get('denomination_dime')) ?? 0) * 0.10 +
-        (intval($get('denomination_quarter')) ?? 0) * 0.25 +
-        (intval($get('denomination_half_dollar')) ?? 0) * 0.50 +
-        (intval($get('denomination_coin_dollar')) ?? 0) * 1;
+            (intval($get('denomination_nickel')) ?? 0) * 0.05 +
+            (intval($get('denomination_dime')) ?? 0) * 0.10 +
+            (intval($get('denomination_quarter')) ?? 0) * 0.25 +
+            (intval($get('denomination_half_dollar')) ?? 0) * 0.50 +
+            (intval($get('denomination_coin_dollar')) ?? 0) * 1;
         $set('total_coin', number_format($totalCoin, 2));
-
     }
 
     public static function updateChecksTotal($set, $get)
@@ -340,13 +373,28 @@ class GivingCalculationResource extends Resource
             return intval($carry) + (intval($item['amount']) ?? 0);
         }, 0));
     }
+    public static function updateOtherTotal($set, $get)
+    {
+        $set('total_other_donations', array_reduce($get('other_donations') ?? [], function ($carry, $item) {
+            return floatval($carry) + (floatval($item['amount']) ?? 0);
+        }, 0));
+    }
 
     public static function setTotalAmount($set, $get)
     {
         $totalCash = $get('total_cash') ?? 0;
         $totalChecks = $get('total_checks') ?? 0;
         $totalCoin = $get('total_coin') ?? 0;
-        $set('total_giving',$totalCash + $totalChecks + $totalCoin);
-        $set('total_cash_coin',$totalCash + $totalCoin);
+        $totalOther = $get('total_other_donations') ?? 0;
+        $set('total_bank_Deposit', $totalCash + $totalChecks + $totalCoin);
+        $set('total_cash_coin', $totalCash + $totalCoin);
+    }
+
+    public static function setBankDeposit($set, $get)
+    {
+        $totalCash = $get('total_cash') ?? 0;
+        $totalChecks = $get('total_checks') ?? 0;
+        $totalCoin = $get('total_coin') ?? 0;
+        $set('total_bank_Deposit', $totalCash + $totalChecks + $totalCoin);
     }
 }
