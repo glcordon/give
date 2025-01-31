@@ -2,22 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GivingCalculationResource\Pages;
-use App\Models\Campaign;
-use App\Models\GivingCalculation;
+use Tables\Table;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Tables\Table;
+use App\Models\Campaign;
+use Filament\Forms\Form;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Resources\Resource;
+use App\Models\GivingCalculation;
+use Filament\Forms\Components\Card;
 use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Select;
+use Illuminate\Support\Facades\Blade;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use App\Filament\Resources\GivingCalculationResource\Pages;
 
 class GivingCalculationResource extends Resource
 {
@@ -331,7 +333,19 @@ class GivingCalculationResource extends Resource
             ->actions([
                 Action::make('delete')
                     ->requiresConfirmation()
-                    ->action(fn(GivingCalculation $record) => $record->delete())
+                    ->action(fn(GivingCalculation $record) => $record->delete()),
+                Action::make('pdf')
+                    ->label('PDF')
+                    ->color('success')
+                    // ->icon('heroicon-s-download')
+                    ->action(function (GivingCalculation $record) {
+                        return response()->streamDownload(function () use ($record) {
+                            echo Pdf::loadHtml(
+                                Blade::render('pdf', ['record' => $record])
+                            )->stream();
+                        }, $record->name . '.pdf');
+                    }),
+
             ])
         ;
     }
