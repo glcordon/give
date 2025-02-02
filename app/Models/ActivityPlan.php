@@ -58,6 +58,7 @@ class ActivityPlan extends Model
                 ->schema([
                     TextInput::make('event_name')->required(),
                     Select::make('type')
+                        ->native()
                         ->options([
                             'service' => 'Service',
                             'meeting' => 'Meeting',

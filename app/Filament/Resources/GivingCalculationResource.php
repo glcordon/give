@@ -20,6 +20,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use App\Filament\Resources\GivingCalculationResource\Pages;
+use App\Filament\Resources\GivingCalculationResource\Widgets\GivingWidget;
 
 class GivingCalculationResource extends Resource
 {
@@ -27,7 +28,7 @@ class GivingCalculationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calculator';
 
-    protected static ?string $navigationLabel = 'Giving';
+    protected static ?string $navigationLabel = 'Offerings';
 
     protected static $totalCheckAmount = [];
 
@@ -412,5 +413,12 @@ class GivingCalculationResource extends Resource
         $totalChecks = $get('total_checks') ?? 0;
         $totalCoin = $get('total_coin') ?? 0;
         $set('total_bank_deposit', $totalCash + $totalChecks + $totalCoin);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            GivingWidget::class,
+        ];
     }
 }
