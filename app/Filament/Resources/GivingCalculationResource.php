@@ -36,7 +36,7 @@ class GivingCalculationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()
+                Forms\Components\Section::make()
                     ->schema([
                         TextInput::make('name')
                             ->label('Name')
