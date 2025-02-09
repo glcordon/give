@@ -11,13 +11,14 @@ class Member extends Model
 {
     protected $fillable = ['name', 'phone', 'address', 'status', 'membership_number'];
 
-    public function gifts() {
+    public function gifts()
+    {
         return $this->hasMany(Gift::class);
     }
 
     public static function getForm()
     {
-      return  [
+        return  [
             TextInput::make('name')->required(),
             TextInput::make('phone')->required(),
             TextInput::make('address')->required(),
@@ -27,5 +28,14 @@ class Member extends Model
             ])->required(),
             TextInput::make('membership_number')->required(),
         ];
+    }
+    public static function assignRandomNumber($id)
+    {
+        $rand = mt_rand(1000, 9999);
+        if (!Self::whereMembershipNumber($rand)->count()) {
+            Self::find($id)->update(['membership_number' => $rand]);
+        } else {
+            Self::assignRandomNumber($id);
+        }
     }
 }

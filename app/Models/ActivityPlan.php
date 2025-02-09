@@ -39,6 +39,9 @@ class ActivityPlan extends Model
         'special_notes',
         'user_id',
         'member_id',
+        'total_raised',
+        'expenses',
+        'total_expenses'
     ];
 
     public function user()
