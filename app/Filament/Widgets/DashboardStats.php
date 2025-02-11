@@ -17,6 +17,17 @@ class DashboardStats extends BaseWidget
                 ->description('Includes cash, coins, and checks')
                 ->icon('heroicon-o-currency-dollar'),
 
+            Stat::make('Total Giving This Month', '$' . number_format(GivingCalculation::whereMonth('date', now()->month)
+                ->whereYear('date', now()->year)
+                ->sum('total_giving'), 2))
+                ->description('Includes cash, coins, and checks')
+                ->icon('heroicon-o-currency-dollar'),
+
+            Stat::make('Total Bank Deposits This Month', '$' . number_format(GivingCalculation::whereMonth('date', now()->month)
+                ->whereYear('date', now()->year)
+                ->sum('total_bank_deposit'), 2))
+                ->icon('heroicon-o-banknotes'),
+
             Stat::make('Total Bank Deposits', '$' . number_format(GivingCalculation::sum('total_bank_deposit'), 2))
                 ->description('Total amount prepared for deposits')
                 ->icon('heroicon-o-banknotes'),

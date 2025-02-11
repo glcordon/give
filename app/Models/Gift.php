@@ -53,16 +53,31 @@ class Gift extends Model
             Repeater::make('gifts')
                 ->schema([
                     Select::make('campaign_id')->relationship('campaign', 'name')->required(),
-                    TextInput::make('amount')->numeric()->required(),
+                    TextInput::make('line_amount')
+                        ->label('Amount')
+                        ->numeric()
+                        ->prefix('$')
+                        ->live(debounce: 1000)
+                        ->required(),
                     Select::make('payment_method')->options([
                         'credit_card' => 'Credit Card',
                         'cash' => 'Cash',
                         'check' => 'Check',
                         'Mobile' => 'Mobile',
                         'other' => 'Other',
-                    ])->required(),
-                ])->columnSpanFull(),
-            TextInput::make('amount')->columnSpanFull()->readOnly()->default(0)->numeric()->required(),
+                    ])
+                        ->required(),
+                ])->afterStateUpdated(function ($set, $get) {
+                    Self::updateGiftTotal($set, $get);
+                })->columnSpanFull(),
+            TextInput::make('amount')->columnSpanFull()->prefix('$')->readOnly()->default(0)->numeric()->required(),
         ];
+    }
+
+    public static function updateGiftTotal($set, $get)
+    {
+        $set('amount', array_reduce($get('gifts') ?? [], function ($carry, $item) {
+            return intval($carry) + (intval($item['line_amount']) ?? 0);
+        }, 0));
     }
 }
