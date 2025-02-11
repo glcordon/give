@@ -253,8 +253,10 @@ class GivingCalculationResource extends Resource
                                     ->required(),
                                 Forms\Components\TextInput::make('role')
                                     ->label('Role')
+                                    ->default('Counter')
                                     ->required(),
                             ])
+                            ->defaultItems(2)
                             ->minItems(2)
                             ->label('Counters'),
 

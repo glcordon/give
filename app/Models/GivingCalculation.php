@@ -37,7 +37,7 @@ class GivingCalculation extends Model
         'denomination_quarter',
         'denomination_half_dollar',
         'denomination_coin_dollar',
-        
+
     ];
 
     protected $casts = [
@@ -52,6 +52,10 @@ class GivingCalculation extends Model
         'total_checks' => 'float',
         'total_giving' => 'float',
         'total_bank_deposit' => 'float',
+    ];
+
+    protected $dates = [
+        'date',
     ];
 
     public function activityPlan()

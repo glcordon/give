@@ -2,23 +2,24 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms;
+use App\Models\Gift;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Select;
 use App\Filament\Exports\GiftsExporter;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\NumberInput;
 use App\Filament\Resources\GiftResource\Pages;
-use App\Filament\Resources\GiftResource\Pages\CreateGift;
 use App\Filament\Resources\GiftResource\Pages\EditGift;
 use App\Filament\Resources\GiftResource\Pages\ListGifts;
-use App\Models\Gift;
-use Filament\Forms;
-use Filament\Forms\Components\NumberInput;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Actions\ExportAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Table;
+use App\Filament\Resources\GiftResource\Pages\CreateGift;
 
 class GiftResource extends Resource
 {
@@ -38,19 +39,23 @@ class GiftResource extends Resource
             ->columns([
                 TextColumn::make('campaign.name')->searchable(),
                 TextColumn::make('amount')->sortable()->money('USD'),
-                TextColumn::make('payment_method'),
                 TextColumn::make('giver_name'),
                 TextColumn::make('created_at')->sortable(),
             ])
             ->filters([
                 SelectFilter::make('campaign')
-                ->relationship('campaign', 'name')
+                    ->relationship('campaign', 'name')
+            ])
+            ->actions([
+                Action::make('delete')
+                    ->requiresConfirmation()
+                    ->action(fn(Self $record) => $record->delete()),
             ])
             ->headerActions([
                 ExportAction::make()
                     ->exporter(GiftsExporter::class)
             ])
-            ;
+        ;
     }
 
     public static function getPages(): array
