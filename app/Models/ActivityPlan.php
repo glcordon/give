@@ -14,6 +14,7 @@ use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TimePicker;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -24,6 +25,7 @@ class ActivityPlan extends Model
     protected $casts = [
         'rooms' => 'array',
         'resources' => 'array',
+        'expenses' => 'array',
     ];
 
     protected $fillable = [
@@ -72,6 +74,7 @@ class ActivityPlan extends Model
                     Textarea::make('description')->columnSpanFull(),
                     TextInput::make('budget')->numeric()->prefix('$'),
                     DatePicker::make('event_date')->required(),
+                    DatePicker::make('end_date'),
                     TimePicker::make('start_time')->required(),
                     TimePicker::make('end_time')->required(),
                 ])->columns(2),
@@ -108,6 +111,7 @@ class ActivityPlan extends Model
                         ])
                         ->columns(2),
                 ])->columns(1),
+
             Section::make('Additional Information')
                 ->schema([
                     Textarea::make('special_notes'),
