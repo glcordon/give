@@ -2,24 +2,26 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Forms\Get;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use App\Models\ActivityPlan;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TimePicker;
 use App\Filament\Resources\ActivityPlanResource\Pages;
-use App\Filament\Resources\ActivityPlanResource\Pages\CreateActivityPlan;
 use App\Filament\Resources\ActivityPlanResource\Pages\EditActivityPlan;
 use App\Filament\Resources\ActivityPlanResource\Pages\ListActivityPlans;
-use App\Models\ActivityPlan;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Hidden;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use App\Filament\Resources\ActivityPlanResource\Pages\CreateActivityPlan;
 
 
 class ActivityPlanResource extends Resource
@@ -46,6 +48,7 @@ class ActivityPlanResource extends Resource
                         Textarea::make('description')->columnSpanFull(),
                         TextInput::make('budget')->numeric()->prefix('$'),
                         DatePicker::make('event_date')->required(),
+                        DatePicker::make('end_date'),
                         TimePicker::make('start_time')->required(),
                         TimePicker::make('end_time')->required(),
                     ])->columns(2),
@@ -57,31 +60,31 @@ class ActivityPlanResource extends Resource
                                 'Lewiston-Woodville Campus' => 'Lewiston-Woodville Campus',
                             ])->required(),
                         Repeater::make('rooms')
-                        ->helperText('I.E. Sanctuary, Kitchen, etc. Bathrooms are a given.')
-                        ->label('Room(s) Requested')
-                        ->schema([
-                            TextInput::make('name')->required(),
-                        ]),
+                            ->helperText('I.E. Sanctuary, Kitchen, etc. Bathrooms are a given.')
+                            ->label('Room(s) Requested')
+                            ->schema([
+                                TextInput::make('name')->required(),
+                            ]),
                     ])->columns(1),
                 // Textarea::make('resources'),
                 Fieldset::make('Required Resources')
                     ->schema([
-                Repeater::make('resources')
-                    ->schema([
-                        TextInput::make('name')->required(),
-                        Select::make('role')
-                            ->options([
-                                'member' => 'Member',
-                                'administrator' => 'Administrator',
-                                'trustee' => 'Trustee',
-                                'security' => 'Security',
-                                'media' => 'Media',
-                                'other' => 'Other',
+                        Repeater::make('resources')
+                            ->schema([
+                                TextInput::make('name')->required(),
+                                Select::make('role')
+                                    ->options([
+                                        'member' => 'Member',
+                                        'administrator' => 'Administrator',
+                                        'trustee' => 'Trustee',
+                                        'security' => 'Security',
+                                        'media' => 'Media',
+                                        'other' => 'Other',
+                                    ])
+                                    ->required(),
                             ])
-                            ->required(),
-                    ])
-                    ->columns(2),
-                ])->columns(1),
+                            ->columns(2),
+                    ])->columns(1),
                 Section::make('Additional Information')
                     ->schema([
                         Textarea::make('special_notes'),
@@ -90,6 +93,31 @@ class ActivityPlanResource extends Resource
                             ->relationship('member', 'name')
                             ->default(auth()->id()),
                     ])->columns(1),
+                Section::make('Expenses')
+                    ->label("Expenses (Admin Only")
+                    ->visible(fn() => auth()->id())
+                    ->collapsed()
+                    ->schema([
+                        Repeater::make('expenses')
+                            ->schema([
+                                TextInput::make('amount'),
+                                TextInput::make('payee')
+                                    ->label('Payee Name'),
+                                Select::make('service')
+                                    ->live()
+                                    ->options([
+                                        'music' => 'Musician',
+                                        'speaker' => 'Speaker',
+                                        'food' => 'Food',
+                                        'vendor' => 'Vendor',
+                                        'other' => 'Other',
+                                    ]),
+                                RichEditor::make('Other Notes')
+                                    ->required(fn(Get $get) => $get('service') == 'other'),
+                            ])
+                            ->columnSpanFull()
+                    ]),
+
             ]);
     }
 
