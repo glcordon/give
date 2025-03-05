@@ -1,13 +1,12 @@
-<div style="background-color: oklch(0.21 0.034 264.665);">
-    <form wire:submit.prevent="submit">
+<div class="space-y-6">
+    <form wire:submit.prevent="submit" class="space-y-4">
         @foreach ($this->form->getComponents() as $component)
-        {!! $component->render() !!}
+        <div class="flex flex-col w-full">
+            {!! $component->render() !!}
+        </div>
         @endforeach
-        <button type="submit" class="btn btn-primary cursor-pointer" style="margin:5px 10px; border-radius:10px; color:white; padding:20px 10px; background-color:blue;">Submit Proposal</button>
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+            Submit Proposal
+        </button>
     </form>
-    <style>
-        .fi-fo-field-wrp-error-message {
-            color: red;
-        }
-    </style>
 </div>
