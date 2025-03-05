@@ -77,6 +77,7 @@ class EventProposalResource extends Resource
                                 'men_women' => 'Men/Women',
                                 'seasoned_saints' => 'Seasoned Saints',
                             ])
+                            ->columns(1)
                             ->required(),
                         Forms\Components\TextInput::make('target_population_other')
                             ->label('Other Target Audience')

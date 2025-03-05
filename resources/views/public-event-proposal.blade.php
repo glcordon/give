@@ -15,6 +15,12 @@
             margin-bottom: 1rem;
         }
 
+        input[type="checkbox"] {
+            width: 40px !important;
+            border: 0 !important;
+            padding-bottom: 0;
+        }
+
         .filament-forms-component-container>div {
             flex-direction: column;
         }
