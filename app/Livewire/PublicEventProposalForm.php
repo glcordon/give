@@ -40,8 +40,6 @@ class PublicEventProposalForm extends Component implements Forms\Contracts\HasFo
         $data['event_coordinators'] = 'pending';
         $data['budget'] = 0;
         $data['vision_support'] = 0;
-        $data['setup_time'] = '';
-        $data['tear_down_time'] = '';
         $data['main_purpose'] = $data['purpose_of_event'] ?? '';
         $event = EventPlan::create($data);
         return redirect()->route('event.proposal.thanks', ['id' => $event->id]);
