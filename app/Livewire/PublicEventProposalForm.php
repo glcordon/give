@@ -27,6 +27,7 @@ class PublicEventProposalForm extends Component implements Forms\Contracts\HasFo
     public $is_registration_required = false;
     public $cost_per_person;
     public $guest_speakers_musicians = [];
+    public $loading = false;
 
     protected function getFormSchema(): array
     {
@@ -35,6 +36,7 @@ class PublicEventProposalForm extends Component implements Forms\Contracts\HasFo
 
     public function submit()
     {
+        $this->loading = true; // Start loading
         $data = $this->form->getState();
         $data['status'] = 'pending';
         $data['event_coordinators'] = 'pending';
@@ -42,6 +44,7 @@ class PublicEventProposalForm extends Component implements Forms\Contracts\HasFo
         $data['vision_support'] = 0;
         $data['main_purpose'] = $data['purpose_of_event'] ?? '';
         $event = EventPlan::create($data);
+        $this->loading = false; // End loading
         return redirect()->route('event.proposal.thanks', ['id' => $event->id]);
     }
 
