@@ -15,6 +15,11 @@
             margin-bottom: 1rem;
         }
 
+        .fi-fo-field-wrp-error-message {
+            color: red;
+            text-decoration: underline;
+        }
+
         input[type="checkbox"] {
             width: 40px !important;
             border: 0 !important;

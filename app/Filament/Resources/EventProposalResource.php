@@ -59,6 +59,7 @@ class EventProposalResource extends Resource
                             ->helperText('We’ll use this to contact you.'),
                         Forms\Components\TextInput::make('proposer_phone')
                             ->label('Your Phone Number')
+                            ->mask('999-999-9999')
                             ->tel()
                             ->maxLength(20),
                         Forms\Components\TextInput::make('expected_attendees')
