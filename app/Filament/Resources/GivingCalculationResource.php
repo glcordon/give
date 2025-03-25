@@ -388,7 +388,7 @@ class GivingCalculationResource extends Resource
     public static function updateChecksTotal($set, $get)
     {
         $set('total_checks', array_reduce($get('checks') ?? [], function ($carry, $item) {
-            return intval($carry) + (intval($item['amount']) ?? 0);
+            return floatval($carry) + (floatval($item['amount']) ?? 0);
         }, 0));
     }
     public static function updateOtherTotal($set, $get)
