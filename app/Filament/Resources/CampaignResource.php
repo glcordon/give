@@ -14,6 +14,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\NumberInput;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\RichText;
 use Filament\Forms\Components\TextInput;
@@ -47,7 +48,7 @@ class CampaignResource extends Resource
                     ->default('Pastors Anniversary')
                     ->required(),
                 TextInput::make('goal_amount')->required()->numeric()->minValue(0),
-                RichText::make('description')->required(),
+                RichEditor::make('description')->required(),
                 DatePicker::make('start_date')->required(),
                 DatePicker::make('end_date')->required(),
                 Hidden::make('created_by')->default(auth()->id()),
