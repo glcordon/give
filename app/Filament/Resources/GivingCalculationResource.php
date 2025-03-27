@@ -440,6 +440,7 @@ class GivingCalculationResource extends Resource
                 TextColumn::make('total_giving')->label('Total Giving')->money('USD'),
                 TextColumn::make('total_bank_deposit')->label('Total Giving')->money('USD'),
             ])
+            ->defaultSort('date', 'desc')
             ->actions([
                 tableAction::make('delete')
                     ->requiresConfirmation()
