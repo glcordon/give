@@ -5,14 +5,15 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Forms\Form;
 use App\Models\EventPlan;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\EventPlanningResource\Pages;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\EventPlanningResource\Pages;
 
 class EventPlanningResource extends Resource
 {
@@ -34,7 +35,15 @@ class EventPlanningResource extends Resource
                     ->schema([
                         Forms\Components\DatePicker::make('event_date')
                             ->label('Event Date')
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn($state, Set $set) => $set('end_date', $state))
+                            ->minDate(now()->addDays(15))
+                            ->maxDate(now()->addYear())
                             ->required(),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->minDate(now()->addDays(15))
+                            ->maxDate(now()->addYear())
+                            ->label('End Date'),
                         Forms\Components\TextInput::make('event_name')
                             ->label('Event Name')
                             ->required()
