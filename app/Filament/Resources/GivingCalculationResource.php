@@ -66,7 +66,7 @@ class GivingCalculationResource extends Resource
                                     ->label('$1 Bills')
                                     ->numeric()
                                     ->placeholder(0)
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->debounce(1000)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
@@ -77,7 +77,7 @@ class GivingCalculationResource extends Resource
                                     ->label('$5 Bills')
                                     ->numeric()
                                     ->placeholder(0)
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->debounce(1000)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateDenominationsTotal($set, $get);
@@ -93,7 +93,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_20')
                                     ->label('$20 Bills')
@@ -104,7 +104,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_50')
                                     ->label('$50 Bills')
@@ -115,7 +115,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_100')
                                     ->label('$100 Bills')
@@ -126,7 +126,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateDenominationsTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                             ]),
                         // Cash Denominations
@@ -136,7 +136,7 @@ class GivingCalculationResource extends Resource
                                     ->label('Penny')
                                     ->numeric()
                                     ->placeholder(0)
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->debounce(1000)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
@@ -147,7 +147,7 @@ class GivingCalculationResource extends Resource
                                     ->label('Nickel')
                                     ->numeric()
                                     ->placeholder(0)
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->debounce(1000)
                                     ->afterStateupdated(function ($set, $get) {
                                         Self::updateCoinTotal($set, $get);
@@ -163,7 +163,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_quarter')
                                     ->label('Quarter')
@@ -174,7 +174,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_half_dollar')
                                     ->label('Half Dollar')
@@ -185,7 +185,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                                 Forms\Components\TextInput::make('denomination_coin_dollar')
                                     ->label('Coin Dollar')
@@ -196,7 +196,7 @@ class GivingCalculationResource extends Resource
                                         Self::updateCoinTotal($set, $get);
                                         Self::setTotalAmount($set, $get);
                                     })
-                                    ->live()
+                                    ->live(debounce: 1000)
                                     ->reactive(),
                             ]),
 
