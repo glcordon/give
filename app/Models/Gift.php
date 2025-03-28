@@ -9,10 +9,11 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Repeater;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
 
 class Gift extends Model
 {
-    protected $fillable = ['amount', 'gifts', 'campaign_id', 'member_id', 'is_anonymous', 'payment_method', 'giver_name'];
+    protected $fillable = ['amount', 'date_given', 'gifts', 'campaign_id', 'member_id', 'is_anonymous', 'payment_method', 'giver_name'];
 
     protected $casts = [
         'gifts' => 'array',
@@ -48,6 +49,9 @@ class Gift extends Model
                 })
                 // ->getOptionLabelsUsing(fn(array $values): array => Member::whereIn('id', $values)->pluck('name', 'id')->toArray())
                 ->createOptionForm(Member::getForm()),
+            DatePicker::make('date_given')
+            ->required()
+            ->default(now()),
             TextInput::make('giver_name')
                 ->nullable(), // For non-members
             Repeater::make('gifts')
