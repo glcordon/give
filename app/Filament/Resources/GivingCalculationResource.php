@@ -76,10 +76,16 @@ class GivingCalculationResource extends Resource
                                 ->hidden(fn($get) => $get('skip_envelope_verification'))
                                 ->schema([
                                     Repeater::make('envelopes')
+                                        ->itemLabel(function (array $state): ?string {
+                                            // Use the donor_name as the label if it exists
+                                            return $state['donor_name'] ?? 'New Envelope';
+                                        })
+                                        ->label()
                                         ->schema([
                                             TextInput::make('donor_name')
                                                 ->label('Donor Name')
                                                 ->columnSpanFull()
+                                                ->live()
                                                 ->required(),
                                             TextInput::make('written_amount')
                                                 ->label('Written Amount ($)')
